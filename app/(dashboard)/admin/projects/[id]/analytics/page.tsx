@@ -35,9 +35,11 @@ import {
 
 // --- Sub-components for Visuals ---
 
-const StatCard = ({ title, value, subtext, icon, trend, colorClass = "primary" }: any) => {
+const StatCard = ({ title, value, subtext, icon, trend, colorClass = "primary", showPercent }: any) => {
     const trendColor = trend?.type === 'up' ? 'text-success' : trend?.type === 'down' ? 'text-error' : 'text-text-secondary';
     const TrendIcon = trend?.type === 'up' ? TrendingUp : trend?.type === 'down' ? TrendingDown : Activity;
+
+    const displayValue = showPercent ? `${String(value).replace('%', '')}%` : value;
 
     return (
         <div className="bg-surface border border-border-theme rounded-3xl p-6 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
@@ -56,7 +58,7 @@ const StatCard = ({ title, value, subtext, icon, trend, colorClass = "primary" }
             </div>
             
             <div className="relative z-10">
-                <p className="text-3xl font-black text-text-primary mb-1">{value || '0'}</p>
+                <p className="text-3xl font-black text-text-primary mb-1">{displayValue || '0'}</p>
                 <p className="text-xs font-bold text-text-secondary uppercase tracking-wider">{title}</p>
                 {subtext && <p className="text-[10px] text-text-secondary/70 mt-2">{subtext}</p>}
             </div>
@@ -247,11 +249,12 @@ const ProjectAnalyticsPage = () => {
                 />
                 <StatCard 
                     title="Completion Rate" 
-                    value={`${overview.completionRate}%`} 
+                    value={overview.completionRate} 
                     subtext="Overall milestone progress"
                     icon={<Zap />}
                     trend={{ type: trends.completionRate.trend, value: Math.abs(trends.completionRate.changePercentage) }}
                     colorClass="success"
+                    showPercent
                 />
                 <StatCard 
                     title="Active Agents" 

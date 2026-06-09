@@ -6,6 +6,7 @@ import axiosInstance from "@/lib/axios";
 import { toast } from "sonner";
 import Loader from "@/components/common/Loader";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import ExportModal from "@/components/common/ExportModal";
 import projectService from "@/services/projectService";
 import { 
     Users, 
@@ -16,7 +17,6 @@ import {
     Search,
     Filter,
     Download,
-    FileSpreadsheet,
     FolderKanban,
     BarChart3,
     Unlock
@@ -636,79 +636,13 @@ export default function AdminDashboard() {
                 loading={actionLoading === unblockingUser?._id}
             />
 
-            {/* Export Modal */}
-            {showExportModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-                    <div className="bg-surface border border-border-theme rounded-3xl p-8 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-200">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-3 bg-primary/10 rounded-2xl">
-                                <FileSpreadsheet className="w-6 h-6 text-primary" />
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-text-primary">Export Data</h3>
-                                <p className="text-xs text-text-secondary mt-0.5">Choose your preferred export format</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3 mb-6">
-                            <button
-                                onClick={() => generateCSVExport(false)}
-                                className="w-full flex items-center justify-between p-4 bg-surface/50 hover:bg-primary/5 border border-border-theme hover:border-primary/30 rounded-2xl transition-all group"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-success/10 rounded-xl">
-                                        <FileSpreadsheet className="w-5 h-5 text-success" />
-                                    </div>
-                                    <div className="text-left">
-                                        <p className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors">Basic CSV Export</p>
-                                        <p className="text-xs text-text-secondary">User data only</p>
-                                    </div>
-                                </div>
-                                <ArrowUpRight className="w-5 h-5 text-text-secondary group-hover:text-primary transition-colors" />
-                            </button>
-
-                            <button
-                                onClick={() => generateCSVExport(true)}
-                                className="w-full flex items-center justify-between p-4 bg-surface/50 hover:bg-primary/5 border border-border-theme hover:border-primary/30 rounded-2xl transition-all group"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-xl">
-                                        <BarChart3 className="w-5 h-5 text-primary" />
-                                    </div>
-                                    <div className="text-left">
-                                        <p className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors">Advanced CSV Report</p>
-                                        <p className="text-xs text-text-secondary">Includes statistics & metadata</p>
-                                    </div>
-                                </div>
-                                <ArrowUpRight className="w-5 h-5 text-text-secondary group-hover:text-primary transition-colors" />
-                            </button>
-
-                            <button
-                                onClick={generateJSONExport}
-                                className="w-full flex items-center justify-between p-4 bg-surface/50 hover:bg-primary/5 border border-border-theme hover:border-primary/30 rounded-2xl transition-all group"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-accent/10 rounded-xl">
-                                        <Download className="w-5 h-5 text-accent" />
-                                    </div>
-                                    <div className="text-left">
-                                        <p className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors">JSON Export</p>
-                                        <p className="text-xs text-text-secondary">Structured data for API integration</p>
-                                    </div>
-                                </div>
-                                <ArrowUpRight className="w-5 h-5 text-text-secondary group-hover:text-primary transition-colors" />
-                            </button>
-                        </div>
-
-                        <button
-                            onClick={() => setShowExportModal(false)}
-                            className="w-full px-4 py-3 bg-secondary hover:bg-border-theme text-text-primary rounded-2xl text-sm font-bold transition-all"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            )}
+            {/* Export Modal - Uses Portal to render at body level */}
+            <ExportModal
+                isOpen={showExportModal}
+                onClose={() => setShowExportModal(false)}
+                onExportCSV={generateCSVExport}
+                onExportJSON={generateJSONExport}
+            />
         </div>
     );
 }
