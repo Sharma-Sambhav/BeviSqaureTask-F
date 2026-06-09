@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Mode (Aurora Frost) */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --primary: #7c3aed;
+  --secondary: #f1f5f9;
+  --accent: #0ea5e9;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --sidebar-bg: #f1f5f9;
+
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+}
+
+.dark {
+  /* Dark Mode (Aurora Midnight) */
+  --background: #020617;
+  --foreground: #f8fafc;
+
+  --primary: #8b5cf6;
+  --secondary: #0f172a;
+  --accent: #2dd4bf;
+  --surface: #0b1120;
+  --border: #1e293b;
+  --sidebar-bg: #050505;
+
+  --success: #10b981;
+  --error: #f43f5e;
+  --warning: #f59e0b;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
+  --color-border-theme: var(--border);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@layer utilities {
+  .animate-in {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+  }
+  
+  .fade-in {
+    animation-name: fadeIn;
+  }
+  
+  .slide-in-from-bottom-4 {
+    animation-name: slideInFromBottom;
+  }
+  
+  .zoom-in {
+    animation-name: zoomIn;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromBottom {
+  from { transform: translateY(1rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
